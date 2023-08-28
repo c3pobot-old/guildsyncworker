@@ -1,17 +1,11 @@
 'use strict'
-const CalcGearQuality = require('./calcGearQuality')
-const CalcModQuality = require('./calcModQuality')
 module.exports = (obj)=>{
   try{
     obj.updated = Date.now()
-    obj.gp = +(obj.profileStat.find(x=>x.nameKey === 'STAT_GALACTIC_POWER_ACQUIRED_NAME').value)
-    obj.gpChar = +(obj.profileStat.find(x=>x.nameKey === 'STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME').value)
-    obj.gpShip = +(obj.profileStat.find(x=>x.nameKey === 'STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME').value)
-    obj.quality = {
-      mods: CalcModQuality(obj.rosterUnit.filter(x=>x.combatType == 1), 9999),
-      top: CalcModQuality(obj.rosterUnit.filter(x=>x.combatType == 1), 80),
-      gear: CalcGearQuality(obj.rosterUnit, obj.gp)
-    }
+    obj.gp = +(obj.profileStat.find(x=>x.nameKey === 'STAT_GALACTIC_POWER_ACQUIRED_NAME')?.value || 0)
+    obj.gpChar = +(obj.profileStat.find(x=>x.nameKey === 'STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME')?.value || 0)
+    obj.gpShip = +(obj.profileStat.find(x=>x.nameKey === 'STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME')?.value || 0)
+    obj.quality = obj.summary.quality
     obj.allyCode = +obj.allyCode
 
     obj.arena = {
